@@ -87,8 +87,9 @@ console.log(errors)
                             </div>
                         </div>
                         <div className="mt-4">
-                            <button type="submit" disabled={processing} className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium">create
-                                account</button>
+                            <button type="submit" disabled={processing} aria-busy={processing} className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium disabled:opacity-75 disabled:cursor-not-allowed">
+                                {processing ? 'Creating account...' : 'Create account'}
+                            </button>
                         </div>
                     </form>
                     {/* login with */}

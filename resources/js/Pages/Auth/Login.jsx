@@ -66,7 +66,9 @@ export default function Login({ status, canResetPassword }) {
                             <a href={route('password.request')} className="text-primary">Forgot password</a>
                         </div>
                         <div className="mt-4">
-                            <button type="submit" disabled={processing} className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium">Login</button>
+                            <button type="submit" disabled={processing} aria-busy={processing} className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium disabled:opacity-75 disabled:cursor-not-allowed">
+                                {processing ? 'Logging in...' : 'Login'}
+                            </button>
                         </div>
                     </form>
                     {/* login with */}
