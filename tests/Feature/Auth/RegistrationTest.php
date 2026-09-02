@@ -7,13 +7,17 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    // Make sure we have the required role
+    \Spatie\Permission\Models\Role::create(['name' => 'user']);
+
     $response = $this->post('/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'aggrement' => true,
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('home', absolute: false));
 });

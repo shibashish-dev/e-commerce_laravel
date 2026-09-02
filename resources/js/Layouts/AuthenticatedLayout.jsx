@@ -1,25 +1,20 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
 import Footer from '@/Components/Footer';
 import Navbar from '@/Components/Navbar';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
-export default function AuthenticatedLayout({ header, children}) {
+export default function AuthenticatedLayout({ children }) {
     const { props } = usePage()
     const { auth, categories } = props
-    console.log(auth)
+
     return (
-        <>
+        <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-900 selection:bg-accent selection:text-white">
+            <Navbar user={auth?.user} categories={categories}/>
 
-            {/* navbar */} <Navbar user={auth?.user} categories={categories}/> {/* ./navbar */}
+            <main className="flex-grow pt-28 pb-12 relative z-10">
+                {children}
+            </main>
 
-            {/* content */} <main>{children}</main> {/* ./content */}
-
-            {/* footer */} <Footer /> {/* ./footer */}
-
-        </>
+            <Footer />
+        </div>
     );
 }

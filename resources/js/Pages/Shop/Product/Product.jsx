@@ -2,321 +2,160 @@ import React, { useState } from "react";
 import { Rating } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import ProductCard from "@/Components/Shop/Product";
-import Breadcrumb from "@/Components/Breadcrumb";
 import { useCart } from "react-use-cart";
 import Toast from "@/Components/Toast";
 import { useWishlist } from "react-use-wishlist";
+import { motion } from "framer-motion";
 
 const Product = ({ product }) => {
     const [mainImage, setMainImage] = useState(product.image);
     const [alert, setAlert] = useState(false);
     const [quantity, setQuantity] = useState(1);
-    const gallery = JSON.parse(product?.gallery);
+    const gallery = product?.gallery ? JSON.parse(product.gallery) : [];
+
     const { addItem } = useCart();
     const { addWishlistItem } = useWishlist();
+
     const addToCart = () => {
         addItem({ ...product }, quantity);
         setAlert(true);
-
-        setTimeout(() => {
-            setAlert(false);
-        }, 3000);
+        setTimeout(() => setAlert(false), 3000);
     };
 
-    const increaseQuantity = () => {
-        setQuantity((prev) => prev + 1);
-    };
+    const increaseQuantity = () => setQuantity((prev) => prev + 1);
+    const decreaseQuantity = () => { if (quantity > 1) setQuantity((prev) => prev - 1); };
 
-    const decreaseQuantity = () => {
-        if (quantity > 1) {
-            setQuantity((prev) => prev - 1);
-        }
-    };
-    console.log(product);
     return (
-        <>
-            {/* breadcrumb */}
-            <Breadcrumb />
-            <Toast
-                open={alert}
-                message={"Item added to cart"}
-                severity="success"
-                display={alert ? "block" : "none"}
-            />
-            {/* ./breadcrumb */}
-            {/* product-detail */}
-            <div className="container grid grid-cols-2 gap-6">
-                <div>
-                    <img
-                        src={mainImage}
-                        alt={product.title}
-                        className="w-full"
-                    />
-                    <div className="grid grid-cols-5 gap-4 mt-4">
-                        {gallery?.map((image, index) => {
-                            return (
+        <div className="bg-neutral-50/30 min-h-screen py-12">
+            <Toast open={alert} message={"Item added to cart"} severity="success" display={alert ? "block" : "none"} />
+
+            <div className="container mx-auto px-4">
+                <div className="glass-panel p-6 md:p-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+
+                        {/* Image Gallery */}
+                        <div className="space-y-6">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.5 }}
+                                className="aspect-[4/5] bg-neutral-100 rounded-3xl overflow-hidden relative flex items-center justify-center border border-neutral-200/50"
+                            >
                                 <img
-                                    key={index}
-                                    src={image}
+                                    src={mainImage}
                                     alt={product.title}
-                                    className={`w-full cursor-pointer border ${
-                                        mainImage === image
-                                            ? "border-blue-500"
-                                            : ""
-                                    }`}
-                                    onClick={() => setMainImage(image)}
+                                    className="w-full h-full object-cover mix-blend-multiply"
                                 />
-                            );
-                        })}
-                    </div>
-                </div>
-                <div>
-                    <h2 className="text-3xl font-medium uppercase mb-2">
-                        {product.title}
-                    </h2>
-                    <div className="flex items-center mb-4">
-                        <div className="flex gap-1 text-sm text-yellow-400">
-                            <Rating
-                                name="text-feedback"
-                                value={4.5}
-                                readOnly
-                                precision={0.5}
-                                emptyIcon={
-                                    <StarIcon
-                                        style={{ opacity: 0.55 }}
-                                        fontSize="inherit"
-                                    />
-                                }
-                            />
-                        </div>
-                        <div className="text-xs text-gray-500 ml-3">
-                            (150 Reviews)
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <p className="text-gray-800 font-semibold space-x-2">
-                            <span>Availability: </span>
-                            {product.stock > 0 ? (
-                                <span className="text-green-600">In Stock</span>
-                            ) : (
-                                <span className="text-red-600">
-                                    Out of Stock
-                                </span>
+                            </motion.div>
+
+                            {gallery.length > 0 && (
+                                <div className="grid grid-cols-4 gap-4">
+                                    <button
+                                        onClick={() => setMainImage(product.image)}
+                                        className={`aspect-square rounded-2xl overflow-hidden bg-neutral-100 border-2 transition-all ${mainImage === product.image ? 'border-primary' : 'border-transparent hover:border-neutral-300'}`}
+                                    >
+                                        <img src={product.image} className="w-full h-full object-cover mix-blend-multiply" />
+                                    </button>
+                                    {gallery.map((img, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setMainImage(img)}
+                                            className={`aspect-square rounded-2xl overflow-hidden bg-neutral-100 border-2 transition-all ${mainImage === img ? 'border-primary' : 'border-transparent hover:border-neutral-300'}`}
+                                        >
+                                            <img src={img} className="w-full h-full object-cover mix-blend-multiply" />
+                                        </button>
+                                    ))}
+                                </div>
                             )}
-                        </p>
-                        <p className="space-x-2">
-                            <span className="text-gray-800 font-semibold">
-                                Brand:{" "}
-                            </span>
-                            <span className="text-gray-600">Apex</span>
-                        </p>
-                        <p className="space-x-2">
-                            <span className="text-gray-800 font-semibold">
-                                Category:{" "}
-                            </span>
-                            <span className="text-gray-600">
-                                {product.category.name}
-                            </span>
-                        </p>
-                        <p className="space-x-2">
-                            <span className="text-gray-800 font-semibold">
-                                SKU:{" "}
-                            </span>
-                            <span className="text-gray-600 uppercase">
-                                {product.sku}
-                            </span>
-                        </p>
-                    </div>
-                    <div className="flex items-baseline mb-1 space-x-2 font-roboto mt-4">
-                        <p className="text-xl text-primary font-semibold">
-                            {parseFloat(product.price).toFixed(2)}
-                        </p>
-                        <p className="text-base text-gray-400 line-through">
-                            {parseFloat(product.price).toFixed(2)}
-                        </p>
-                    </div>
-                    <p className="mt-4 text-gray-600">{product.description}</p>
+                        </div>
 
-                    <div className="pt-4">
-                        <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
-                            Color
-                        </h3>
-                        <div className="flex items-center gap-2">
-                            <div className="color-selector">
-                                <input
-                                    type="radio"
-                                    name="color"
-                                    id="red"
-                                    className="hidden"
-                                />
-                                <label
-                                    htmlFor="red"
-                                    className="border border-gray-200 rounded-sm h-6 w-6  cursor-pointer shadow-sm block"
-                                    style={{ backgroundColor: "#fc3d57" }}
-                                />
-                            </div>
-                            <div className="color-selector">
-                                <input
-                                    type="radio"
-                                    name="color"
-                                    id="black"
-                                    className="hidden"
-                                />
-                                <label
-                                    htmlFor="black"
-                                    className="border border-gray-200 rounded-sm h-6 w-6  cursor-pointer shadow-sm block"
-                                    style={{ backgroundColor: "#000" }}
-                                />
-                            </div>
-                            <div className="color-selector">
-                                <input
-                                    type="radio"
-                                    name="color"
-                                    id="white"
-                                    className="hidden"
-                                />
-                                <label
-                                    htmlFor="white"
-                                    className="border border-gray-200 rounded-sm h-6 w-6  cursor-pointer shadow-sm block"
-                                    style={{ backgroundColor: "#fff" }}
-                                />
-                            </div>
+                        {/* Product Details */}
+                        <div className="flex flex-col">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                            >
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">In Stock</span>
+                                </div>
+                                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 leading-tight">
+                                    {product.title}
+                                </h1>
+
+                                <div className="flex items-center gap-4 mb-6">
+                                    <div className="flex text-yellow-400">
+                                        <Rating value={4.5} readOnly precision={0.5} size="small" emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />} />
+                                    </div>
+                                    <span className="text-sm text-neutral-500 font-medium">(150 Reviews)</span>
+                                </div>
+
+                                <div className="flex items-end gap-4 mb-8">
+                                    <span className="text-4xl font-bold text-primary">${parseFloat(product.price).toFixed(2)}</span>
+                                    <span className="text-xl text-neutral-400 line-through decoration-neutral-300 mb-1">${(parseFloat(product.price) * 1.2).toFixed(2)}</span>
+                                </div>
+
+                                <p className="text-neutral-600 leading-relaxed mb-8 max-w-lg">
+                                    {product.description || "Experience premium quality with this meticulously crafted item. Designed for both style and durability, it's the perfect addition to your collection."}
+                                </p>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.4 }}
+                                className="mt-auto border-t border-neutral-100 pt-8"
+                            >
+                                <div className="flex items-center gap-6 mb-8">
+                                    <div className="font-semibold text-primary">Quantity</div>
+                                    <div className="flex items-center bg-neutral-100 rounded-xl p-1 border border-neutral-200">
+                                        <button onClick={decreaseQuantity} className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-neutral-600 hover:text-primary hover:shadow-sm transition-all shadow-sm">
+                                            <i className="fa-solid fa-minus text-xs"></i>
+                                        </button>
+                                        <div className="w-12 text-center font-semibold text-primary">{quantity}</div>
+                                        <button onClick={increaseQuantity} className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-neutral-600 hover:text-primary hover:shadow-sm transition-all shadow-sm">
+                                            <i className="fa-solid fa-plus text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={addToCart}
+                                        className="flex-1 bg-primary text-white py-4 rounded-xl font-semibold hover:bg-primary-light hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+                                    >
+                                        <i className="fa-solid fa-cart-shopping"></i> Add to Cart
+                                    </button>
+                                    <button
+                                        onClick={() => addWishlistItem(product)}
+                                        className="w-14 h-14 bg-white border border-neutral-200 rounded-xl flex items-center justify-center text-neutral-600 hover:text-red-500 hover:border-red-500 hover:bg-red-50 transition-all duration-300"
+                                        title="Add to Wishlist"
+                                    >
+                                        <i className="fa-regular fa-heart text-xl"></i>
+                                    </button>
+                                </div>
+                            </motion.div>
                         </div>
                     </div>
-                    <div className="mt-4">
-                        <h3 className="text-sm text-gray-800 uppercase mb-1">
-                            Quantity
-                        </h3>
-                        <div className="flex border border-gray-300 text-gray-600 divide-x divide-gray-300 w-max">
-                            <button
-                                onClick={decreaseQuantity}
-                                className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
-                            >
-                                -
-                            </button>
-                            <div className="h-8 w-8 text-base flex items-center justify-center">
-                                {quantity}
-                            </div>
-                            <button
-                                onClick={increaseQuantity}
-                                className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-                    <div className="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
-                        <button
-                            onClick={() => addToCart(product)}
-                            className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary transition"
-                        >
-                            <i className="fa-solid fa-bag-shopping" /> Add to
-                            cart
-                        </button>
-                        <button
-                            onClick={() => addWishlistItem(product)}
-                            className="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:text-primary transition"
-                        >
-                            <i className="fa-solid fa-heart" /> Wishlist
-                        </button>
-                    </div>
-                    <div className="flex gap-3 mt-4">
-                        <a
-                            href="#"
-                            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-                        >
-                            <i className="fa-brands fa-facebook-f" />
-                        </a>
-                        <a
-                            href="#"
-                            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-                        >
-                            <i className="fa-brands fa-twitter" />
-                        </a>
-                        <a
-                            href="#"
-                            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-                        >
-                            <i className="fa-brands fa-instagram" />
-                        </a>
-                    </div>
+                </div>
+
+                {/* Additional Info Tabs */}
+                <div className="mt-16 glass-panel p-8">
+                     <h3 className="text-xl font-bold text-primary mb-6 border-b border-neutral-100 pb-4">Product Description</h3>
+                     <div className="prose prose-neutral max-w-none text-neutral-600">
+                         <p>
+                             Discover the perfect blend of functionality and modern design. This product is engineered using top-grade materials to ensure longevity and superior performance. Whether you're upgrading your daily essentials or looking for that standout piece, this delivers on all fronts.
+                         </p>
+                         <ul>
+                             <li>Premium material construction</li>
+                             <li>Ergonomic and modern design</li>
+                             <li>Built for everyday durability</li>
+                             <li>Easy maintenance and care</li>
+                         </ul>
+                     </div>
                 </div>
             </div>
-            {/* ./product-detail */}
-
-            {/* description */}
-            <div className="container pb-16">
-                <h3 className="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
-                    Product details
-                </h3>
-                <div className="w-3/5 pt-6">
-                    <div className="text-gray-600">
-                        <p
-                            dangerouslySetInnerHTML={{
-                                __html: product.description,
-                            }}
-                        />
-                    </div>
-                    <table className="table-auto border-collapse w-full text-left text-gray-600 text-sm mt-6">
-                        <tbody>
-                            <tr>
-                                <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                                    Weight
-                                </th>
-                                <th className="py-2 px-4 border border-gray-300 ">
-                                    {product.weight}kg
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                                    Height
-                                </th>
-                                <th className="py-2 px-4 border border-gray-300 ">
-                                    {product.height}cm
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                                    Width
-                                </th>
-                                <th className="py-2 px-4 border border-gray-300 ">
-                                    {product.width}cm
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                                    Length
-                                </th>
-                                <th className="py-2 px-4 border border-gray-300 ">
-                                    {product.length}cm
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            {/* ./description */}
-
-            {/* related product */}
-            <div className="container pb-16">
-                <h2 className="text-2xl font-medium text-gray-800 uppercase mb-6">
-                    Related products
-                </h2>
-
-                <div className="grid grid-cols-4 gap-6">
-                    {product?.related_products.map((item) => {
-                        return (
-                            <ProductCard
-                                product={item}
-                                layout={"grid"}
-                                key={item.id}
-                            />
-                        );
-                    })}
-                </div>
-            </div>
-            {/* ./related product */}
-        </>
+        </div>
     );
 };
 

@@ -1,8 +1,10 @@
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
+import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 const Summery = ({ cartTotal, totalUniqueItems, user }) => {
-    const { data, setData, post, processing, reset } = useForm({
+    const { data, setData, post, processing } = useForm({
         code: "",
         user_id: user?.id,
     });
@@ -12,6 +14,7 @@ const Summery = ({ cartTotal, totalUniqueItems, user }) => {
     const [couponData, setCouponData] = useState(null);
     const [total, setTotal] = useState(0);
     const [applied, setApplied] = useState(false);
+    const [shippingCost, setShippingCost] = useState(5.99);
 
     const handleSubmitCoupon = async (e) => {
         e.preventDefault();
@@ -22,161 +25,150 @@ const Summery = ({ cartTotal, totalUniqueItems, user }) => {
         }
 
         try {
-            const response = await window.axios.post(
-                route("coupon.reedem"),
-                data
-            );
+            const response = await window.axios.post(route("coupon.reedem"), data);
 
             if (response.data.success) {
                 setCouponValid(true);
-                setCouponMessage("Coupon Code Applied!");
+                setCouponMessage("Coupon applied successfully!");
                 setCouponData(response.data.data);
                 setApplied(true);
-
-                // Show success alert using SweetAlert
-                window.Swal.fire({
-                    icon: "success",
-                    title: "Coupon Applied!",
-                    text: "Your discount has been applied successfully.",
-                });
+                window.Swal?.fire({ icon: "success", title: "Coupon Applied!", text: "Your discount has been applied." });
             } else {
-                setCouponMessage(
-                    response.data.message || "Invalid coupon code."
-                );
+                setCouponMessage(response.data.message || "Invalid coupon code.");
                 setApplied(false);
-
-                // Show error alert
-                window.Swal.fire({
-                    icon: "error",
-                    title: "Coupon Error",
-                    text: response.data.message || "Invalid coupon code.",
-                });
             }
         } catch (error) {
-            setCouponMessage(
-                error.response.data.message || "Invalid coupon code."
-            );
+            setCouponMessage(error?.response?.data?.message || "Invalid coupon code.");
             setApplied(false);
-            console.log(error);
-
-            window.Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text:
-                    error.response.data.message ||
-                    "Something went wrong! Please try again.",
-            });
         }
     };
 
-    console.log(couponData);
     useEffect(() => {
+        let currentTotal = cartTotal;
         if (couponData) {
-            let discount = 0;
-
-            if (couponData.type === "fixed") {
-                discount = couponData.value;
-            } else if (couponData.type === "percent") {
-                discount = (couponData.value / 100) * cartTotal;
-            }
-
-            let total = Math.max(cartTotal - discount, 0); // Ensure total doesn't go negative
-            setTotal(total);
-        } else {
-            setTotal(cartTotal);
+            let discount = couponData.type === "fixed" ? couponData.value : (couponData.value / 100) * cartTotal;
+            currentTotal = Math.max(cartTotal - discount, 0);
         }
-    }, [couponData, cartTotal]);
+        setTotal(currentTotal + shippingCost);
+    }, [couponData, cartTotal, shippingCost]);
 
     return (
-        <>
-            <div className="col-span-12 xl:col-span-4 bg-gray-50 w-full max-w-3xl xl:max-w-lg mx-auto lg:pl-8 px-6 py-16">
-                <h2 className="font-manrope font-bold text-3xl leading-10 text-black pb-6 border-b border-gray-300">
-                    Order Summary
-                </h2>
+        <div className="glass-panel p-6 md:p-8 sticky top-28 flex flex-col gap-6">
+            <h2 className="text-xl font-bold text-primary border-b border-neutral-100 pb-4">
+                Order Summary
+            </h2>
 
-                <div className="mt-6">
-                    {/* Order Info */}
-                    <div className="flex items-center justify-between pb-4">
-                        <p className="text-lg text-black">
-                            {totalUniqueItems} Items
-                        </p>
-                        <p className="font-medium text-lg text-black">
-                            ₹{cartTotal.toFixed(2)}
-                        </p>
+            <div className="space-y-4">
+                <div className="flex items-center justify-between text-neutral-600">
+                    <span>Subtotal ({totalUniqueItems} items)</span>
+                    <span className="font-semibold text-primary">${cartTotal.toFixed(2)}</span>
+                </div>
+
+                {applied && couponData && (
+                    <div className="flex items-center justify-between text-emerald-600 bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                        <span className="flex items-center gap-2"><i className="fa-solid fa-tag text-xs"></i> Discount applied</span>
+                        <span className="font-semibold">
+                            -${couponData.type === 'fixed' ? couponData.value.toFixed(2) : ((couponData.value / 100) * cartTotal).toFixed(2)}
+                        </span>
                     </div>
+                )}
+            </div>
 
-                    {/* Shipping */}
-                    <label className="block text-gray-600 text-sm font-medium mb-2">
-                        Shipping
-                    </label>
-                    <div className="space-y-3 pb-4">
-                        <label className="flex items-center">
+            {/* Shipping Options */}
+            <div className="border-t border-neutral-100 pt-6">
+                <label className="block text-sm font-semibold text-primary mb-3">Shipping Method</label>
+                <div className="space-y-3">
+                    <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${shippingCost === 5.99 ? 'border-primary bg-primary/5 ring-1 ring-primary/20' : 'border-neutral-200 hover:border-neutral-300 bg-white'}`}>
+                        <div className="flex items-center gap-3">
                             <input
                                 type="radio"
-                                name="shippingOption"
-                                value="standard"
-                                className="mr-2"
+                                name="shipping"
+                                value="5.99"
+                                checked={shippingCost === 5.99}
+                                onChange={() => setShippingCost(5.99)}
+                                className="text-primary focus:ring-primary w-4 h-4"
                             />
-                            Standard Shipping (₹5.99)
-                        </label>
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="shippingOption"
-                                value="express"
-                                className="mr-2"
-                            />
-                            Express Shipping (₹9.99)
-                        </label>
-                    </div>
-                    <form onSubmit={handleSubmitCoupon}>
-                        {/* Coupon Code */}
-                        <label className="block text-gray-600 text-sm font-medium mb-2">
-                            Coupon Code
-                        </label>
-                        <div className="flex items-center gap-3 pb-4">
-                            <input
-                                type="text"
-                                name="code"
-                                onChange={(e) =>
-                                    setData("code", e.target.value)
-                                }
-                                className="w-full h-11 px-4 py-2 text-base text-gray-900 bg-white border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
-                                placeholder="Enter a coupon code..."
-                            />
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-500 hover:bg-transparent hover:text-primary border border-primary"
-                            >
-                                Apply
-                            </button>
+                            <div className="flex flex-col">
+                                <span className="font-medium text-neutral-800 text-sm">Standard Shipping</span>
+                                <span className="text-xs text-neutral-500">3-5 business days</span>
+                            </div>
                         </div>
-                    </form>
-                    {couponMessage && (
-                        <p
-                            className={`text-sm ${
-                                applied ? "text-green-500" : "text-red-500"
-                            }`}
-                        >
-                            {couponMessage}
-                        </p>
-                    )}
-                    {/* Order Total */}
-                    <div className="flex items-center justify-between py-6">
-                        <p className="font-medium text-xl text-black">Total</p>
-                        <p className="font-semibold text-xl text-indigo-600">
-                            ₹{total.toFixed(2)}
-                        </p>
-                    </div>
+                        <span className="font-semibold text-neutral-700 text-sm">$5.99</span>
+                    </label>
 
-                    {/* Checkout Button */}
-                    <Link href={route('checkout.index')}  className="w-full bg-primary text-white py-3 text-lg font-semibold rounded-lg transition-all duration-500 hover:bg-transparent hover:text-primary border border-primary text-center block">
-                        Checkout
-                    </Link>
+                    <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${shippingCost === 9.99 ? 'border-primary bg-primary/5 ring-1 ring-primary/20' : 'border-neutral-200 hover:border-neutral-300 bg-white'}`}>
+                        <div className="flex items-center gap-3">
+                            <input
+                                type="radio"
+                                name="shipping"
+                                value="9.99"
+                                checked={shippingCost === 9.99}
+                                onChange={() => setShippingCost(9.99)}
+                                className="text-primary focus:ring-primary w-4 h-4"
+                            />
+                            <div className="flex flex-col">
+                                <span className="font-medium text-neutral-800 text-sm">Express Shipping</span>
+                                <span className="text-xs text-neutral-500">1-2 business days</span>
+                            </div>
+                        </div>
+                        <span className="font-semibold text-neutral-700 text-sm">$9.99</span>
+                    </label>
                 </div>
             </div>
-        </>
+
+            {/* Coupon Code */}
+            <div className="border-t border-neutral-100 pt-6">
+                <label className="block text-sm font-semibold text-primary mb-3">Promo Code</label>
+                <form onSubmit={handleSubmitCoupon} className="flex gap-2 relative">
+                    <input
+                        type="text"
+                        name="code"
+                        onChange={(e) => setData("code", e.target.value)}
+                        className="w-full bg-white border-neutral-200 focus:border-primary focus:ring-primary/20 rounded-xl px-4 py-2.5 outline-none transition-all shadow-sm text-sm"
+                        placeholder="Enter discount code"
+                        disabled={applied}
+                    />
+                    <PrimaryButton
+                        disabled={processing || applied || !data.code}
+                        className={`shrink-0 px-4 py-2.5 rounded-xl ${applied ? 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20' : ''}`}
+                    >
+                        {applied ? <i className="fa-solid fa-check"></i> : 'Apply'}
+                    </PrimaryButton>
+                </form>
+                {couponMessage && (
+                    <p className={`text-xs mt-2 font-medium ${applied ? "text-emerald-600" : "text-red-500"}`}>
+                        <i className={`fa-solid ${applied ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-1`}></i>
+                        {couponMessage}
+                    </p>
+                )}
+            </div>
+
+            {/* Total & Checkout */}
+            <div className="border-t border-neutral-100 pt-6 mt-2">
+                <div className="flex items-end justify-between mb-6">
+                    <span className="text-lg font-bold text-primary">Total</span>
+                    <div className="text-right">
+                        <p className="text-xs text-neutral-400 mb-1">Including shipping & taxes</p>
+                        <span className="text-3xl font-bold text-primary leading-none">${total.toFixed(2)}</span>
+                    </div>
+                </div>
+
+                <Link
+                    href={route('checkout.index')}
+                    className="w-full inline-flex items-center justify-center bg-primary text-white py-4 px-6 font-bold text-lg rounded-xl shadow-xl shadow-primary/20 hover:bg-primary-light hover:-translate-y-1 transition-all duration-300 active:scale-95 group"
+                >
+                    Proceed to Checkout
+                    <i className="fa-solid fa-arrow-right ml-3 transform group-hover:translate-x-1 transition-transform"></i>
+                </Link>
+
+                <div className="mt-4 flex items-center justify-center gap-4 text-neutral-300">
+                    <i className="fa-brands fa-cc-visa text-2xl hover:text-neutral-400 transition-colors"></i>
+                    <i className="fa-brands fa-cc-mastercard text-2xl hover:text-neutral-400 transition-colors"></i>
+                    <i className="fa-brands fa-cc-amex text-2xl hover:text-neutral-400 transition-colors"></i>
+                    <i className="fa-brands fa-cc-paypal text-2xl hover:text-neutral-400 transition-colors"></i>
+                </div>
+            </div>
+        </div>
     );
 };
 
