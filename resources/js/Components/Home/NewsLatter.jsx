@@ -5,45 +5,52 @@ import { motion } from "framer-motion";
 
 const NewsLatter = () => {
     return (
-        <>
-            <motion.section
-                className="body-font rounded-lg  mx-auto container"
-                initial={{ opacity: 0, y: 50 }}
+        <section className="py-20 md:py-32 px-4 md:px-6">
+            <motion.div
+                className="container mx-auto max-w-5xl glass-panel relative overflow-hidden"
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <div className="container px-5 py-24 mx-auto flex flex-wrap flex-col items-center">
-                    <img
-                        className="xl:w-1/4 lg:w-1/3 md:w-1/2 w-2/3 mb-10 object-cover object-center rounded shadow-lg"
-                        alt="hero"
-                        src="https://dummyimage.com/720x600"
-                    />
-                    <div className="flex flex-col text-center w-full mb-12">
-                        <h1 className="text-3xl font-medium title-font mb-4 text-gray-900">
-                            Get Subscribed to our Newsletter
-                        </h1>
-                        <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-gray-700">
-                            Stay updated with the latest news, offers, and
-                            exclusive content. Subscribe now and never miss out
-                            on our exciting updates and promotions!
+                {/* Decorative Elements */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full mix-blend-multiply filter blur-3xl -translate-x-1/3 translate-y-1/3"></div>
+
+                <div className="relative z-10 px-6 py-16 md:py-20 md:px-16 flex flex-col md:flex-row items-center gap-12">
+
+                    <div className="md:w-1/2 flex flex-col text-center md:text-left">
+                        <span className="text-accent font-semibold text-sm uppercase tracking-wider mb-2 block">
+                            Join Our Community
+                        </span>
+                        <h2 className="text-3xl md:text-4xl font-bold title-font mb-4 text-primary tracking-tight">
+                            Subscribe to our Newsletter
+                        </h2>
+                        <p className="leading-relaxed text-neutral-500 mb-8 max-w-md mx-auto md:mx-0">
+                            Stay updated with the latest news, exclusive offers, and early access to new collections. No spam, just good style.
                         </p>
                     </div>
-                    <form className="w-full max-w-md">
-                        <div className="flex items-center border-b-2 border-primary py-2">
-                            <TextInput
+
+                    <div className="md:w-1/2 w-full max-w-md mx-auto relative">
+                        <form className="relative bg-white p-2 rounded-2xl shadow-sm border border-neutral-100 flex items-center">
+                            <i className="fa-regular fa-envelope text-neutral-400 ml-4 absolute z-10"></i>
+                            <input
                                 type="email"
-                                placeholder="Enter your email"
+                                placeholder="Enter your email address"
                                 aria-label="Email"
-                                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                                className="w-full pl-12 pr-4 py-3 bg-transparent border-none text-neutral-700 focus:ring-0 outline-none placeholder-neutral-400 z-0 relative"
                             />
-                            <PrimaryButton className="flex-shrink-0 bg-primary hover:bg-primary-dark border-primary hover:border-primary-dark text-sm border-4 text-white py-1 px-2 rounded">
+                            <PrimaryButton className="shrink-0 rounded-xl px-6 py-3 ml-2 z-10 relative">
                                 Subscribe
                             </PrimaryButton>
-                        </div>
-                    </form>
+                        </form>
+                        <p className="text-xs text-neutral-400 mt-4 text-center md:text-left ml-2">
+                            By subscribing, you agree to our Privacy Policy and Terms of Service.
+                        </p>
+                    </div>
                 </div>
-            </motion.section>
-        </>
+            </motion.div>
+        </section>
     );
 };
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "@inertiajs/react";
 import { hasRole } from "@/Helpers/helper";
+
 const Sidebar = ({ user, active, setActive }) => {
     const [preview, setPreview] = useState(user?.info?.profile || "");
 
@@ -15,7 +16,6 @@ const Sidebar = ({ user, active, setActive }) => {
             };
             reader.readAsDataURL(file);
 
-            // Upload the image to the server
             const formData = new FormData();
             formData.append("profile", file);
 
@@ -32,7 +32,7 @@ const Sidebar = ({ user, active, setActive }) => {
 
                 Swal.fire({
                     icon: "success",
-                    title: "Success",
+                    title: "Updated!",
                     text: response.data.message,
                     toast: true,
                     position: "top-end",
@@ -41,10 +41,9 @@ const Sidebar = ({ user, active, setActive }) => {
                 });
             } catch (error) {
                 console.error("Error uploading image:", error);
-
                 Swal.fire({
                     icon: "error",
-                    title: "Error",
+                    title: "Upload Failed",
                     text: "An error occurred while uploading the image",
                     toast: true,
                     position: "top-end",
@@ -54,146 +53,130 @@ const Sidebar = ({ user, active, setActive }) => {
             }
         }
     };
+
     return (
-        <>
-            <div className="col-span-3">
-                <div className="px-4 py-3 shadow flex items-center gap-4">
-                    <div className="relative w-16 h-16">
-                        {/* Profile Image */}
-                        <img
-                            src={preview}
-                            alt="profile"
-                            className="rounded-full w-16 h-16 border border-gray-200 p-1 object-cover"
-                        />
-                        {/* Upload Button */}
-                        <label
-                            htmlFor="avatar-upload"
-                            className="absolute bottom-0 right-0 bg-primary text-white rounded-full p-2 cursor-pointer shadow-md hover:bg-blue-600 transition"
-                            style={{
-                                width: "32px",
-                                height: "32px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <i className="fa-solid fa-camera text-xs" />
-                        </label>
-                        <input
-                            type="file"
-                            id="avatar-upload"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        />
+        <div className="flex flex-col gap-6 sticky top-28">
+            {/* User Info Card */}
+            <div className="glass-panel p-6 flex flex-col items-center text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/5 to-transparent"></div>
+
+                <div className="relative mb-4 mt-2">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md bg-neutral-100 flex items-center justify-center text-neutral-400">
+                        {preview ? (
+                            <img src={preview} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                            <i className="fa-solid fa-user text-3xl"></i>
+                        )}
                     </div>
-                    <div className="flex-grow">
-                        <p className="text-gray-600">Hello,</p>
-                        <h4 className="text-gray-800 font-medium">
-                            {user?.name}
-                        </h4>
-                    </div>
+
+                    <label
+                        htmlFor="avatar-upload"
+                        className="absolute bottom-0 right-0 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer shadow-md hover:bg-primary-light transition-colors border-2 border-white group"
+                        title="Upload Photo"
+                    >
+                        <i className="fa-solid fa-camera text-[10px] group-hover:scale-110 transition-transform"></i>
+                    </label>
+                    <input
+                        type="file"
+                        id="avatar-upload"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                    />
                 </div>
-                <div className="mt-6 bg-white shadow rounded p-4 divide-y divide-gray-200 space-y-4 text-gray-600">
-                    <div className="space-y-1 pl-8">
-                        <span
-                            className={`relative ${
-                                ["account", "addresses", "password"].includes(
-                                    active
-                                )
-                                    ? "text-primary"
-                                    : ""
-                            } block font-medium capitalize transition`}
-                        >
-                            <span className="absolute -left-8 top-0 text-base">
-                                <i className="fa-regular fa-address-card" />
-                            </span>
-                            Manage account
-                        </span>
-                        <button
-                            onClick={() => setActive("account")}
-                            className={`relative ${
-                                active === "account" ? "text-primary" : ""
-                            } hover:text-primary block capitalize transition`}
-                        >
-                            Profile information
-                        </button>
-                        <button
-                            onClick={() => setActive("addresses")}
-                            className={`relative ${
-                                active === "addresses" ? "text-primary" : ""
-                            } hover:text-primary block capitalize transition`}
-                        >
-                            Manage addresses
-                        </button>
-                        <button
-                            onClick={() => setActive("password")}
-                            className={`relative ${
-                                active === "password" ? "text-primary" : ""
-                            } hover:text-primary block capitalize transition`}
-                        >
-                            Change password
-                        </button>
-                    </div>
 
-                    <div className="space-y-1 pl-8 pt-4">
-                        <span
-                            className={`relative ${
-                                ["orders", "returns"].includes(active)
-                                    ? "text-primary"
-                                    : ""
-                            } block font-medium capitalize transition`}
-                        >
-                            <span className="absolute -left-8 top-0 text-base">
-                                <i className="fa-solid fa-box-archive" />
-                            </span>
-                            Order history
-                        </span>
-                        <button
-                            onClick={() => setActive("orders")}
-                            className={`relative ${
-                                active === "orders" ? "text-primary" : ""
-                            } hover:text-primary block capitalize transition`}
-                        >
-                            My Orders
-                        </button>
-                        <button
-                            onClick={() => setActive("returns")}
-                            className={`relative ${
-                                active === "returns" ? "text-primary" : ""
-                            } hover:text-primary block capitalize transition`}
-                        >
-                            My returns
-                        </button>
-                    </div>
+                <h3 className="text-xl font-bold text-primary mb-1">{user?.name || 'User'}</h3>
+                <p className="text-sm text-neutral-500">{user?.email}</p>
 
-                    <div className="space-y-1 pl-8 pt-4">
+                {hasRole(user, "admin") && (
+                    <span className="mt-3 bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Administrator
+                    </span>
+                )}
+            </div>
+
+            {/* Navigation Menu */}
+            <div className="glass-panel p-4">
+                <nav className="flex flex-col space-y-1">
+                    <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2 px-4 mt-2">Account Settings</div>
+
+                    <button
+                        onClick={() => setActive("account")}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                            active === "account" ? "bg-primary/5 text-primary" : "text-neutral-600 hover:bg-neutral-50 hover:text-primary"
+                        }`}
+                    >
+                        <i className={`fa-regular fa-user ${active === "account" ? "text-primary" : "text-neutral-400"}`}></i>
+                        Profile Information
+                    </button>
+
+                    <button
+                        onClick={() => setActive("addresses")}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                            active === "addresses" ? "bg-primary/5 text-primary" : "text-neutral-600 hover:bg-neutral-50 hover:text-primary"
+                        }`}
+                    >
+                        <i className={`fa-solid fa-location-dot ${active === "addresses" ? "text-primary" : "text-neutral-400"}`}></i>
+                        Manage Addresses
+                    </button>
+
+                    <button
+                        onClick={() => setActive("password")}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                            active === "password" ? "bg-primary/5 text-primary" : "text-neutral-600 hover:bg-neutral-50 hover:text-primary"
+                        }`}
+                    >
+                        <i className={`fa-solid fa-lock ${active === "password" ? "text-primary" : "text-neutral-400"}`}></i>
+                        Change Password
+                    </button>
+
+                    <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2 px-4 mt-4 pt-4 border-t border-neutral-100">Order History</div>
+
+                    <button
+                        onClick={() => setActive("orders")}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                            active === "orders" ? "bg-primary/5 text-primary" : "text-neutral-600 hover:bg-neutral-50 hover:text-primary"
+                        }`}
+                    >
+                        <i className={`fa-solid fa-box-open ${active === "orders" ? "text-primary" : "text-neutral-400"}`}></i>
+                        My Orders
+                    </button>
+
+                    <button
+                        onClick={() => setActive("returns")}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                            active === "returns" ? "bg-primary/5 text-primary" : "text-neutral-600 hover:bg-neutral-50 hover:text-primary"
+                        }`}
+                    >
+                        <i className={`fa-solid fa-arrow-rotate-left ${active === "returns" ? "text-primary" : "text-neutral-400"}`}></i>
+                        My Returns
+                    </button>
+
+                    <div className="mt-4 pt-4 border-t border-neutral-100">
                         {hasRole(user, "admin") && (
                             <a
                                 href={route("admin.index")}
                                 target="_blank"
-                                className="relative hover:text-primary block font-medium capitalize transition"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium text-neutral-600 hover:bg-neutral-50 hover:text-primary"
                             >
-                                <span className="absolute -left-8 top-0 text-base">
-                                    <i className="fa-solid fa-user-tie"></i>
-                                </span>
-                                Admin
+                                <i className="fa-solid fa-user-tie text-neutral-400"></i>
+                                Admin Dashboard
+                                <i className="fa-solid fa-arrow-up-right-from-square ml-auto text-[10px]"></i>
                             </a>
                         )}
                         <Link
                             href={route("logout")}
                             method="post"
-                            className="text-red-600 relative hover:text-red-800 block font-medium capitalize transition"
+                            as="button"
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium text-red-500 hover:bg-red-50"
                         >
-                            <span className="absolute -left-8 top-0 text-base">
-                                <i className="fa-solid fa-right-from-bracket" />
-                            </span>
-                            Logout
+                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                            Sign Out
                         </Link>
                     </div>
-                </div>
+                </nav>
             </div>
-        </>
+        </div>
     );
 };
 

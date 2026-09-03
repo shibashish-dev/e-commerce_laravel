@@ -16,9 +16,9 @@ class Role
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // if (!Auth::check()) {
-        //     abort(403, 'Unauthorized');
-        // }
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized');
+        }
 
         // Check if user has any of the provided roles
         if (!Auth::user()->hasAnyRole($roles)) {

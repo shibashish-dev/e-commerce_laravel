@@ -1,83 +1,84 @@
-import React from 'react'
+import React from 'react';
+import { Link } from '@inertiajs/react';
 
 const Footer = () => {
     return (
-        <>
-            {/* footer */}
-            <footer className="bg-white pt-16 pb-12 border-t border-gray-100">
-                <div className="container grid grid-cols-1 ">
-                    <div className="col-span-1 space-y-4">
-                        <img src="assets/images/logo.svg" alt="logo" className="w-30" />
-                        <div className="mr-2">
-                            <p className="text-gray-500">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, hic?
-                            </p>
-                        </div>
-                        <div className="flex space-x-5">
-                            <a href="#" className="text-gray-400 hover:text-gray-500"><i className="fa-brands fa-facebook-square" /></a>
-                            <a href="#" className="text-gray-400 hover:text-gray-500"><i className="fa-brands fa-instagram-square" /></a>
-                            <a href="#" className="text-gray-400 hover:text-gray-500"><i className="fa-brands fa-twitter-square" /></a>
-                            <a href="#" className="text-gray-400 hover:text-gray-500">
-                                <i className="fa-brands fa-github-square" />
+        <footer className="bg-white border-t border-neutral-200 mt-auto relative z-10">
+            <div className="container mx-auto px-4 md:px-6 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-8">
+
+                    {/* Brand Section */}
+                    <div className="col-span-1 md:col-span-1 lg:col-span-1 flex flex-col items-start">
+                        <Link href="/" className="text-2xl font-bold tracking-tight text-primary mb-4">
+                            {import.meta.env.VITE_APP_NAME || "Store"}
+                        </Link>
+                        <p className="text-neutral-500 text-sm leading-relaxed mb-6 max-w-xs text-balance">
+                            Elevating your shopping experience with premium products and seamless design.
+                        </p>
+                        <div className="flex items-center gap-4 text-neutral-400">
+                            <a href="#" className="hover:text-primary transition-colors hover:-translate-y-1 transform duration-300">
+                                <i className="fa-brands fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#" className="hover:text-primary transition-colors hover:-translate-y-1 transform duration-300">
+                                <i className="fa-brands fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" className="hover:text-primary transition-colors hover:-translate-y-1 transform duration-300">
+                                <i className="fa-brands fa-facebook text-xl"></i>
                             </a>
                         </div>
                     </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-4">
-                        <div className="grid grid-cols-2 gap-4 md:gap-8">
-                            <div>
-                                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Solutions</h3>
-                                <div className="mt-4 space-y-4">
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Marketing</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Analitycs</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Commerce</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Insights</a>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Support</h3>
-                                <div className="mt-4 space-y-4">
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Pricing</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Guides</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">API Status</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-8">
-                            <div>
-                                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Solutions</h3>
-                                <div className="mt-4 space-y-4">
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Marketing</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Analitycs</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Commerce</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Insights</a>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Support</h3>
-                                <div className="mt-4 space-y-4">
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Pricing</a>
-                                    {/* <a href="#" class="text-base text-gray-500 hover:text-gray-900 block">Documentation</a> */}
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">Guides</a>
-                                    <a href="#" className="text-base text-gray-500 hover:text-gray-900 block">API Status</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            {/* ./footer */}
-            {/* copyright */}
-            <div className="bg-gray-800 py-4">
-                <div className="container flex items-center justify-between">
-                    <p className="text-white">© {import.meta.env.VITE_APP_NAME} - All Right Reserved</p>
+
+                    {/* Links Group 1 */}
                     <div>
-                        <img src="assets/images/methods.png" alt="methods" className="h-5" />
+                        <h4 className="font-semibold text-primary mb-6">Shop</h4>
+                        <ul className="flex flex-col gap-4 text-sm text-neutral-500">
+                            <li><Link href="#" className="hover:text-primary transition-colors">All Products</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">New Arrivals</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Best Sellers</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Sale</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Links Group 2 */}
+                    <div>
+                        <h4 className="font-semibold text-primary mb-6">Support</h4>
+                        <ul className="flex flex-col gap-4 text-sm text-neutral-500">
+                            <li><Link href="#" className="hover:text-primary transition-colors">Contact Us</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">FAQ</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Shipping Returns</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Track Order</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Links Group 3 */}
+                    <div>
+                        <h4 className="font-semibold text-primary mb-6">Legal</h4>
+                        <ul className="flex flex-col gap-4 text-sm text-neutral-500">
+                            <li><Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link></li>
+                            <li><Link href="#" className="hover:text-primary transition-colors">Cookie Policy</Link></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Bottom Bar */}
+            <div className="border-t border-neutral-100 bg-neutral-50/50">
+                <div className="container mx-auto px-4 md:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p className="text-neutral-400 text-sm">
+                        &copy; {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME || "Store"}. All rights reserved.
+                    </p>
+                    <div className="flex gap-4">
+                        {/* Example Payment Icons - replace with actual assets if available */}
+                        <div className="h-6 w-10 bg-neutral-200 rounded-sm"></div>
+                        <div className="h-6 w-10 bg-neutral-200 rounded-sm"></div>
+                        <div className="h-6 w-10 bg-neutral-200 rounded-sm"></div>
                     </div>
                 </div>
             </div>
-            {/* ./copyright */}
-        </>
-    )
-}
+        </footer>
+    );
+};
 
-export default Footer
+export default Footer;

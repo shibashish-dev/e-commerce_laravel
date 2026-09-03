@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import { Rating } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Link } from '@inertiajs/react';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCart } from "react-use-cart";
 import Toast from '../Toast';
 import { useWishlist } from 'react-use-wishlist';
-const Product = ({ product, layout }) => {
 
+const Product = ({ product, layout }) => {
     const { addItem } = useCart();
     const { addWishlistItem } = useWishlist();
-    const [alert, setAlert] = useState(false)
+    const [alert, setAlert] = useState(false);
+
     const addToCart = () => {
         addItem(product);
         setAlert(true);
-
         setTimeout(() => {
             setAlert(false);
         }, 3000);
@@ -23,68 +21,77 @@ const Product = ({ product, layout }) => {
 
     return (
         <>
-            <div className={`bg-white shadow rounded overflow-hidden group ${layout === 'list' ? 'flex items-center p-4 gap-4 justify-between' : ''}`}>
+            <div className={`glass-panel overflow-hidden group hover:-translate-y-1 transition-all duration-300 relative ${layout === 'list' ? 'flex flex-col sm:flex-row items-center p-4 gap-6' : 'flex flex-col'}`}>
                 <Toast message={"Item added to cart"} open={alert} severity='success' display={alert ? 'block' : 'none'} />
-                {/* Product Image */}
-                <div className={`relative bg-gray-100 ${layout === 'list' ? 'w-40 h-40' : 'w-full h-64'} flex items-center justify-center`}>
-                    <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
 
-                    {/* Hover Effects */}
-                    <div
-                        className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition"
-                    >
-                        <Link
-                            href={route('product.show', product.slug)}
-                            className="text-white text-lg w-9 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                            title="View product"
-                        >
-                            <VisibilityIcon />
-                        </Link>
-                        <button
+                {/* Product Image Container */}
+                <div className={`relative bg-neutral-100 overflow-hidden rounded-xl ${layout === 'list' ? 'w-full sm:w-48 h-48 flex-shrink-0' : 'w-full aspect-[4/5]'} flex items-center justify-center m-2`}>
+                    <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+
+                    {/* Quick Actions overlay */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                         <button
                             onClick={() => addWishlistItem(product)}
-                            className="text-white text-lg w-9 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-gray-800 transition"
+                            className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-600 hover:text-red-500 hover:bg-white shadow-sm transition-all"
                             title="Add to wishlist"
                         >
-                            <FavoriteIcon />
+                            <i className="fa-regular fa-heart text-sm"></i>
                         </button>
+                         <Link
+                            href={route('product.show', product.slug)}
+                            className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-white shadow-sm transition-all"
+                            title="View details"
+                        >
+                            <i className="fa-regular fa-eye text-sm"></i>
+                        </Link>
                     </div>
                 </div>
 
                 {/* Product Details */}
-                <div className={`p-4 flex flex-col gap-3 ${layout === 'list' ? 'flex-1 min-h-full justify-center ' : ''}`}>
+                <div className={`p-4 flex flex-col flex-grow ${layout === 'list' ? 'justify-center w-full' : ''}`}>
                     <Link href={route('product.show', product.slug)}>
-                        <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <h4 className="font-medium text-lg leading-tight mb-2 text-neutral-800 hover:text-primary transition-colors line-clamp-2">
                             {product.title}
                         </h4>
                     </Link>
-                    <div className="flex items-baseline mb-1 space-x-2">
-                        <p className="text-xl text-primary font-semibold">{parseFloat(product.price).toFixed(2)}</p>
-                        <p className="text-sm text-gray-400 line-through">{parseFloat(product.price).toFixed(2)}</p>
-                    </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center">
-                        <div className="flex gap-1 text-sm text-yellow-400">
-                            <Rating
-                                name="text-feedback"
+                    <div className="flex items-center gap-2 mb-3">
+                        <div className="flex text-yellow-400">
+                             <Rating
+                                name="read-only"
                                 value={4.5}
                                 readOnly
                                 precision={0.5}
+                                size="small"
                                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                             />
                         </div>
-                        <div className="text-xs text-gray-500 ml-3">(150)</div>
+                        <span className="text-xs text-neutral-400 font-medium">(150)</span>
                     </div>
 
-                    {/* Add to Cart Button */}
-                    <button
-                        onClick={() => addToCart(product)}
+                    <div className="mt-auto">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="text-xl font-bold text-primary">${parseFloat(product.price).toFixed(2)}</span>
+                            <span className="text-sm text-neutral-400 line-through decoration-neutral-300">${(parseFloat(product.price) * 1.2).toFixed(2)}</span>
+                        </div>
 
-                        className={`w-auto block  text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition ${layout === 'list' ? 'mt-4 py-2 w-40' : 'py-1'
+                        {/* Add to Cart Button */}
+                        <button
+                            onClick={() => addToCart(product)}
+                            className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                                layout === 'list'
+                                    ? 'bg-primary text-white hover:bg-primary-light shadow-md hover:shadow-lg hover:-translate-y-0.5 sm:w-auto sm:px-8'
+                                    : 'bg-white border border-neutral-200 text-neutral-700 hover:border-primary hover:bg-primary hover:text-white shadow-sm'
                             }`}
-                    >
-                        Add to cart
-                    </button>
+                        >
+                            <i className="fa-solid fa-cart-shopping text-[12px]"></i>
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
