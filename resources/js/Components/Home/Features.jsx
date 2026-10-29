@@ -16,8 +16,8 @@ const Features = ({ features }) => {
     return (
         <>
             {/* features */}
-            <div className="container py-16">
-                <div className="w-10/12 grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto justify-center">
+            <div className="container section-space overflow-x-clip">
+                <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 px-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
                     {features.map((feature) => {
                         return (
                             <motion.div
@@ -27,18 +27,18 @@ const Features = ({ features }) => {
                                 viewport={{ once: false, amount: 0.2 }}
                                 variants={featureVariants}
                                 key={feature.id}
-                                className="border border-primary rounded-sm px-3 py-6 flex justify-center items-center gap-5"
+                                className="glass-surface gold-glint min-w-0 rounded-2xl px-5 py-6 text-slate-100 transition duration-500 hover:-translate-y-1 hover:border-amber-100/30 sm:px-6 sm:py-7"
                             >
                                 <img
                                     src={feature.image}
                                     alt={feature.name}
-                                    className="w-12 h-12 object-contain"
+                                    className="h-12 w-12 shrink-0 object-contain"
                                 />
-                                <div>
+                                <div className="min-w-0">
                                     <h4 className="font-medium capitalize text-lg">
                                         {feature.name}
                                     </h4>
-                                    <p className="text-gray-500 text-sm">
+                                    <p className="text-slate-400 text-sm">
                                         {feature.description}
                                     </p>
                                 </div>

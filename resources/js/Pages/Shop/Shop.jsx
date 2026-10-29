@@ -52,18 +52,18 @@ const Shop = ({ categories, products }) => {
             <Breadcrumb />
             {/* ./breadcrumb */}
             {/* shop wrapper */}
-            <div className="container grid md:grid-cols-4 grid-cols-2 gap-6 pt-4 pb-16 items-start">
+            <div className="container grid grid-cols-1 items-start gap-5 pb-12 pt-2 sm:gap-6 sm:pb-16 md:grid-cols-4">
 
                 {/* ShopSidebar */}
                 <Sidebar categories={categories} handleCategoryFilter={handleCategoryFilter} />
                 {/* /ShopSidebar */}
 
                 {/* products */}
-                <div className="col-span-3">
+                <div className="min-w-0 md:col-span-3">
                     {/* Sorting */}
                     <Sort onSortChange={handleSortChange} onLayoutChange={setLayout} layout={layout} />
                     {/* /Sorting */}
-                    <div className={`${layout === 'list' ? 'flex flex-col gap-6' : 'grid md:grid-cols-3 grid-cols-2 gap-6'}`}>
+                    <div className={`${layout === 'list' ? 'flex flex-col gap-5 sm:gap-6' : 'grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3'}`}>
                         {sortedProducts.map((product, index) => {
                             return (
                                 <Product key={index} product={product} layout={layout} />

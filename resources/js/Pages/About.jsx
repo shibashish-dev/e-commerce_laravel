@@ -4,22 +4,23 @@ import React from "react";
 const About = () => {
     return (
         <>
-            <div className="sm:flex items-center max-w-screen-xl">
-                <div className="sm:w-1/2 p-10">
+            <section className="container section-space">
+                <div className="glass-surface grid items-center overflow-hidden rounded-3xl sm:grid-cols-2">
+                <div className="p-6 sm:p-8 lg:p-12">
                     <div className="image object-center text-center">
-                        <img src="https://i.imgur.com/WbQnbas.png" />
+                        <img className="about-illustration" src="/assets/images/about/about.png" alt="Our team working together" />
                     </div>
                 </div>
-                <div className="sm:w-1/2 p-5">
+                <div className="p-6 sm:p-8 lg:p-12">
                     <div className="text">
-                        <span className="border-b-2 border-indigo-600 uppercase">
+                        <span className="border-b border-primary pb-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
                             About us
                         </span>
-                        <h2 className="my-4 font-bold text-3xl  sm:text-4xl ">
+                        <h2 className="my-5 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                             About{" "}
-                            <span className="text-indigo-600">Our Company</span>
+                            <span className="text-primary">Our Company</span>
                         </h2>
-                        <p className="text-gray-700">
+                        <p className="max-w-xl text-base leading-7 text-gray-500 sm:text-lg">
                             Lorem ipsum dolor sit amet, consectetur adipisicing
                             elit. Aliquid, commodi doloremque, fugiat illum
                             magni minus nisi nulla numquam obcaecati placeat
@@ -27,53 +28,53 @@ const About = () => {
                         </p>
                     </div>
                 </div>
-            </div>
+                </div>
+            </section>
 
-            <section className>
-                <div className="py-12">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="container section-space">
+                    <div className="max-w-7xl mx-auto">
                         <div className="lg:text-center">
-                            <h2 className="font-heading mb-4 bg-orange-100 text-orange-800 px-4 py-2 rounded-lg md:w-64 md:mx-auto text-xs font-semibold tracking-widest uppercase title-font">
+                            <h2 className="glass-surface mb-5 inline-flex rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary lg:mx-auto">
                                 Why choose us?
                             </h2>
-                            <p className="font-heading mt-2 text-3xl leading-8 font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                            <p className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-gray-900 sm:text-4xl">
                                 We know tech, we know finance. We are fintech
                                 experts.
                             </p>
-                            <p className="mt-4 max-w-2xl text-lg text-gray-500 lg:mx-auto">
+                            <p className="mt-4 max-w-2xl text-lg leading-7 text-gray-500 lg:mx-auto">
                                 We know how to handle taxation for all the
                                 countried we operate in. We care for our
                                 customers and help them manage cashflows.
                             </p>
                         </div>
                         <div className="mt-10">
-                            <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                                <div className="relative">
+                            <dl className="grid gap-5 md:grid-cols-2">
+                                <div className="glass-surface gold-glint relative rounded-2xl p-6 sm:p-7">
                                     <dt>
-                                        <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-gray-900">
                                             <img src="https://www.svgrepo.com/show/503163/api-settings.svg" />
                                         </div>
-                                        <p className="font-heading ml-16 text-lg leading-6 font-bold text-gray-700">
+                                        <p className="mt-5 text-lg font-semibold leading-6 text-gray-700">
                                             Powerful API
                                         </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    <dd className="mt-2 text-sm leading-6 text-gray-500">
                                         Lorem ipsum, dolor sit amet consectetur
                                         adipisicing elit. Maiores impedit
                                         perferendis suscipit eaque, iste dolor
                                         cupiditate blanditiis ratione.
                                     </dd>
                                 </div>
-                                <div className="relative">
+                                <div className="glass-surface gold-glint relative rounded-2xl p-6 sm:p-7">
                                     <dt>
-                                        <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-gray-900">
                                             <img src="https://www.svgrepo.com/show/503138/webpack.svg" />
                                         </div>
-                                        <p className="font-heading ml-16 text-lg leading-6 font-bold text-gray-700">
+                                        <p className="mt-5 text-lg font-semibold leading-6 text-gray-700">
                                             Easy to integrate SDK
                                         </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    <dd className="mt-2 text-sm leading-6 text-gray-500">
                                         {" "}
                                         Lorem ipsum, dolor sit amet consectetur
                                         adipisicing elit. Maiores impedit
@@ -81,16 +82,16 @@ const About = () => {
                                         cupiditate blanditiis ratione.
                                     </dd>
                                 </div>
-                                <div className="relative">
+                                <div className="glass-surface gold-glint relative rounded-2xl p-6 sm:p-7">
                                     <dt>
-                                        <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-gray-900">
                                             <img src="https://www.svgrepo.com/show/511771/dashboard-671.svg" />
                                         </div>
-                                        <p className="font-heading ml-16 text-lg leading-6 font-bold text-gray-700">
+                                        <p className="mt-5 text-lg font-semibold leading-6 text-gray-700">
                                             Low Transaction Cost
                                         </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    <dd className="mt-2 text-sm leading-6 text-gray-500">
                                         {" "}
                                         Lorem ipsum, dolor sit amet consectetur
                                         adipisicing elit. Maiores impedit
@@ -98,16 +99,16 @@ const About = () => {
                                         cupiditate blanditiis ratione.
                                     </dd>
                                 </div>
-                                <div className="relative">
+                                <div className="glass-surface gold-glint relative rounded-2xl p-6 sm:p-7">
                                     <dt>
-                                        <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-gray-900">
                                             <img src="https://www.svgrepo.com/show/76267/free-commercial-label.svg" />
                                         </div>
-                                        <p className="font-heading ml-16 text-lg leading-6 font-bold text-gray-700">
+                                        <p className="mt-5 text-lg font-semibold leading-6 text-gray-700">
                                             Powerful Dashboard
                                         </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    <dd className="mt-2 text-sm leading-6 text-gray-500">
                                         {" "}
                                         Lorem ipsum, dolor sit amet consectetur
                                         adipisicing elit. Maiores impedit
@@ -118,7 +119,6 @@ const About = () => {
                             </dl>
                         </div>
                     </div>
-                </div>
             </section>
         </>
     );

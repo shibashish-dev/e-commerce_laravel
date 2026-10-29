@@ -1,6 +1,5 @@
 import React, { use, useState } from 'react'
 import ReorderIcon from '@mui/icons-material/Reorder';
-import { useSelector } from 'react-redux';
 
 const Sidebar = ({ categories,handleCategoryFilter }) => {
     console.log(categories)
@@ -27,7 +26,7 @@ const Sidebar = ({ categories,handleCategoryFilter }) => {
             {/* drawer component */}
             <div
                 id="drawer-example"
-                className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'} bg-white w-80`}
+                className={`fixed top-0 left-0 z-40 h-screen w-80 overflow-y-auto border-r border-white/10 bg-white p-5 shadow-2xl shadow-black/40 transition-transform ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}
                 tabIndex={-1}
                 aria-labelledby="drawer-label"
             >
@@ -205,7 +204,7 @@ const Sidebar = ({ categories,handleCategoryFilter }) => {
 
             </div>
             {/* ./sidebar */}
-            <div className="col-span-1 bg-white px-4 pb-6 shadow rounded overflow-hiddenb hidden md:block">
+            <div className="col-span-1 hidden overflow-hidden rounded-2xl border border-white/10 bg-white px-5 pb-6 pt-5 shadow-xl shadow-black/20 md:block">
                 <div className="divide-y divide-gray-200 space-y-5">
                     <div>
                         <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">

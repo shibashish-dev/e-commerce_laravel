@@ -1,164 +1,210 @@
 import { Link, router } from "@inertiajs/react";
-import React from "react";
 import { useCart } from "react-use-cart";
 import { useWishlist } from "react-use-wishlist";
+import ApplicationLogo from "@/Components/ApplicationLogo";
 
-const Navbar = ({ user, categories }) => {
+const Navbar = ({ user, categories = [] }) => {
     const { totalItems } = useCart();
     const { totalWishlistItems } = useWishlist();
+    const currentRoute = route().current();
 
+    // Main navigation items
+    const menuRoutes = [
+        { name: "Home", route: "home" },
+        { name: "Shop", route: "shop.index", active: "shop.*" },
+        { name: "Articles", route: "article.view", active: "article.*" },
+        { name: "About us", route: "about" },
+        { name: "Contact us", route: "contact.view" },
+    ];
+
+    const isActiveRoute = (routeName, activePattern) => currentRoute === routeName || (activePattern && route().current(activePattern));
+    const menuLinkClass = (routeName, activePattern) => `menu-liquid nav-main-link text-gray-300 transition ${isActiveRoute(routeName, activePattern) ? "is-active" : "" }`;
+
+    // Search handler
     const handleSearch = (e) => {
         e.preventDefault();
 
-        const search = e.target.search.value.trim();
-        if (search) {
-            router.get(route('search',search)); // Redirect user to search page with query
-        }
+        const search = e.currentTarget.search.value.trim();
 
-    }
+        if (search) {
+            router.get(route("search", { search }));
+        }
+    };
+
     return (
         <>
-            {/* header */}
-            <header className="py-4 shadow-sm bg-white">
-                <div className="container flex items-center justify-between">
+            {/* Header */}
+            <header className="sticky top-0 z-40 border-b border-white/10 bg-white py-4 shadow-sm">
+                <div className="container flex items-center justify-between gap-3">
+                    {/* Logo */}
                     <Link
                         href={route("home")}
-                        className="flex items-center space-x-2"
+                        aria-label="Avero home"
+                        className="inline-flex shrink-0 items-center"
                     >
-                        {/* <img src="assets/images/logo.svg" alt="Logo" className="w-32" /> */}{" "}
-                        {import.meta.env.VITE_APP_NAME}
+                        <ApplicationLogo />
                     </Link>
-                    <form onSubmit={handleSearch}  className="w-1/2">
-                        <div className="w-full  relative flex">
+
+                    {/* Search */}
+                    <form
+                        onSubmit={handleSearch}
+                        className="hidden w-1/2 md:block"
+                    >
+                        <div className="relative flex w-full">
                             <span className="absolute left-4 top-3 text-lg text-gray-400">
                                 <i className="fa-solid fa-magnifying-glass" />
                             </span>
+
                             <input
                                 type="text"
                                 name="search"
                                 id="search"
-                                className="w-full border border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none active:outline-none hidden md:flex"
-                                placeholder="search"
+                                placeholder="Search products..."
+                                className="w-full rounded-l-md border border-r-0 py-3 pl-12 pr-3 focus:outline-none"
                             />
-                            <button type="submit" className="items-center bg-primary border border-primary text-white px-8 rounded-r-md hover:bg-transparent hover:text-primary transition hidden md:flex">
+
+                            <button
+                                type="submit"
+                                className="hidden items-center rounded-r-md border border-primary bg-primary px-8 text-white transition hover:bg-transparent hover:text-primary md:flex"
+                            >
                                 Search
                             </button>
                         </div>
                     </form>
+
+                    {/* User Actions */}
                     <div className="flex items-center space-x-4">
+                        {/* Wishlist */}
                         <Link
                             href={route("wishlist")}
-                            className="text-center text-gray-700 hover:text-primary transition relative"
+                            className="relative text-center text-gray-700 transition hover:text-primary"
                         >
-                            <div className="text-2xl">
+                            <div className="text-xl sm:text-2xl">
                                 <i className="fa-regular fa-heart" />
                             </div>
-                            <div className="text-xs leading-3">Wishlist</div>
-                            <div className="absolute right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
-                                {totalWishlistItems}
+
+                            <div className="hidden text-xs leading-3 sm:block">
+                                Wishlist
                             </div>
+
+                            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                                {totalWishlistItems}
+                            </span>
                         </Link>
+
+                        {/* Cart */}
                         <Link
                             href={route("cart")}
-                            className="text-center text-gray-700 hover:text-primary transition relative"
+                            className="relative text-center text-gray-700 transition hover:text-primary"
                         >
-                            <div className="text-2xl">
+                            <div className="text-xl sm:text-2xl">
                                 <i className="fa-solid fa-bag-shopping" />
                             </div>
-                            <div className="text-xs leading-3">Cart</div>
-                            <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
-                                {totalItems}
+
+                            <div className="hidden text-xs leading-3 sm:block">
+                                Cart
                             </div>
+
+                            <span className="absolute -right-3 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                                {totalItems}
+                            </span>
                         </Link>
+
+                        {/* Account */}
                         <Link
                             href={route("profile.index")}
-                            className="text-center text-gray-700 hover:text-primary transition relative"
+                            className="text-center text-gray-700 transition hover:text-primary"
                         >
-                            <div className="text-2xl">
+                            <div className="text-xl sm:text-2xl">
                                 <i className="fa-regular fa-user" />
                             </div>
-                            <div className="text-xs leading-3">Account</div>
+
+                            <div className="hidden text-xs leading-3 sm:block">
+                                Account
+                            </div>
                         </Link>
                     </div>
                 </div>
             </header>
-            {/* ./header */}
-            {/* navbar */}
 
-            <nav className="bg-gray-900 w-full shadow-md">
-                <div className="container mx-auto flex items-center">
-                    <div className="px-8 py-5 bg-primary md:flex items-center cursor-pointer relative group hidden">
+            {/* Navigation */}
+            <nav className="w-full bg-gray-900 shadow-md">
+                <div className="container mx-auto flex min-w-0 items-center">
+                    {/* Categories Dropdown */}
+                    <div className="group relative hidden cursor-pointer bg-primary px-8 py-5 md:flex md:items-center">
                         <span className="text-white">
                             <i className="fa-solid fa-bars" />
                         </span>
-                        {/* Dropdown */}
-                        <div className="absolute w-60 left-0 top-full bg-white shadow-lg py-3 divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300 invisible group-hover:visible z-50">
-                            {categories.map((item, index) => (
-                                <Link
-                                    key={index}
-                                    href={route("slug.show", item.slug)}
-                                    className="flex items-center px-6 py-3 hover:bg-gray-100 transition"
-                                >
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="w-5 h-5 object-contain"
-                                    />
-                                    <span className="ml-6 text-gray-600 text-sm">
-                                        {item.name}
-                                    </span>
-                                </Link>
-                            ))}
+
+                        <div className="glass-surface invisible absolute left-0 top-full z-50 w-60 rounded-b-2xl rounded-tr-2xl py-3 opacity-0 shadow-xl transition duration-300 group-hover:visible group-hover:opacity-100">
+                            {categories.map((item) => {
+                                const active =
+                                    currentRoute === "slug.show" &&
+                                    String(route().params.slug) ===
+                                    String(item.slug);
+
+                                return (
+                                    <Link
+                                        key={item.id}
+                                        href={route("slug.show", item.slug)}
+                                        aria-current={
+                                            active ? "page" : undefined
+                                        }
+                                        className={`menu-liquid flex items-center px-6 py-3 transition ${active ? "is-active" : ""
+                                            }`}
+                                    >
+                                        <img
+                                            src={item.image}
+                                            alt={item.name}
+                                            className="h-5 w-5 object-contain"
+                                        />
+
+                                        <span className="ml-6 text-sm text-gray-600">
+                                            {item.name}
+                                        </span>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
 
-                    {/* Main Navigation */}
-                    <div className="flex items-center justify-between flex-grow md:pl-12 py-5">
-                        <div className="flex items-center space-x-6 capitalize">
-                            <Link
-                                href={route("home")}
-                                className="text-gray-300 hover:text-white transition"
-                            >
-                                Home
-                            </Link>
-                            <Link
-                                href={route("shop.index")}
-                                className="text-gray-300 hover:text-white transition"
-                            >
-                                Shop
-                            </Link>
-                            <Link
-                                href={route("article.view")}
-                                className="text-gray-300 hover:text-white transition"
-                            >
-                                Articles
-                            </Link>
-                            <Link
-                                href={route("about")}
-                                className="text-gray-300 hover:text-white transition"
-                            >
-                                About us
-                            </Link>
-                            <Link
-                                href={route('contact.view')}
-                                className="text-gray-300 hover:text-white transition"
-                            >
-                                Contact us
-                            </Link>
+                    {/* Main Links */}
+                    <div className="flex min-w-0 flex-grow items-center justify-between gap-3 py-3 md:py-5 md:pl-12">
+                        <div className="nav-menu flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap capitalize md:gap-6">
+                            {menuRoutes.map((item) => {
+                                const active = isActiveRoute(
+                                    item.route,
+                                    item.active
+                                );
+
+                                return (
+                                    <Link
+                                        key={item.route}
+                                        href={route(item.route)}
+                                        aria-current={ active ? "page" : undefined }
+                                        className={menuLinkClass(item.route, item.active)}
+                                    >
+                                        {item.name}
+                                    </Link>
+                                );
+                            })}
                         </div>
-                        <div className="flex gap-3">
+
+                        {/* Authentication */}
+                        <div className="flex shrink-0 gap-3">
                             {!user ? (
                                 <Link
                                     href={route("login")}
-                                    className="text-gray-300 hover:text-white transition"
+                                    className="menu-liquid text-gray-300 transition"
                                 >
                                     Login
                                 </Link>
                             ) : (
                                 <Link
-                                    method="post"
                                     href={route("logout")}
-                                    className="text-red-300 hover:text-white transition"
+                                    method="post"
+                                    as="button"
+                                    className="menu-liquid text-red-300 transition"
                                 >
                                     Logout
                                 </Link>
@@ -167,8 +213,6 @@ const Navbar = ({ user, categories }) => {
                     </div>
                 </div>
             </nav>
-
-            {/* ./navbar */}
         </>
     );
 };

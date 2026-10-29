@@ -12,7 +12,7 @@ export default function AuthenticatedLayout({ header, children}) {
     const { auth, categories } = props
     console.log(auth)
     return (
-        <>
+        <div className="app-shell min-h-screen">
 
             {/* navbar */} <Navbar user={auth?.user} categories={categories}/> {/* ./navbar */}
 
@@ -20,6 +20,6 @@ export default function AuthenticatedLayout({ header, children}) {
 
             {/* footer */} <Footer /> {/* ./footer */}
 
-        </>
+        </div>
     );
 }

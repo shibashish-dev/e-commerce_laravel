@@ -2,8 +2,8 @@ import React from "react";
 
 const Ads = ({ ads }) => {
     return (
-        <div className="container pb-16">
-            <div className="flex w-full rounded-lg bg-white shadow overflow-hidden flex-col md:flex-row">
+        <div className="container section-space">
+            <div className="glass-surface gold-glint flex w-full flex-col overflow-hidden rounded-3xl md:flex-row">
                 {/* Image Section */}
                 <div className="md:w-5/12 w-full h-64 md:h-auto">
                     <a href="#" className="block h-full">
@@ -15,11 +15,11 @@ const Ads = ({ ads }) => {
                     </a>
                 </div>
                 {/* Text Section */}
-                <div className="p-4 md:p-8 lg:p-16 md:w-7/12 flex flex-col justify-center">
-                    <h2 className="mb-3 text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl">
+                <div className="flex flex-col justify-center p-6 sm:p-8 md:w-7/12 md:p-10 lg:p-14">
+                    <h2 className="mb-3 text-2xl font-bold leading-tight tracking-tight text-white md:text-4xl">
                         {ads.title}
                     </h2>
-                    <p className="mb-6 text-gray-500">{ads.description}</p>
+                    <p className="mb-6 text-slate-300">{ads.description}</p>
                     <a
                         href={ads.url}
                         className="w-auto block text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition py-2 px-4"

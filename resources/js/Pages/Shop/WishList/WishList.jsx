@@ -25,7 +25,7 @@ const WishList = () => {
                         <div className="grid grid-cols-12">
                             <div className="col-span-12 pt-14 pb-8 lg:py-24 w-full">
                                 <div className="flex items-center justify-between pb-8 border-b border-gray-300">
-                                    <h2 className="font-manrope font-bold text-3xl leading-10 text-black">
+                                    <h2 className="font-manrope font-bold text-3xl leading-10 text-[--luxury-cream]">
                                         My Wishlists
                                     </h2>
                                     <h2 className="font-manrope font-bold text-xl leading-8 text-gray-600">
@@ -52,7 +52,7 @@ const WishList = () => {
                     <div className="grid grid-cols-12">
                         <div className="col-span-12 pt-14 pb-8 lg:py-24 w-full">
                             <div className="flex items-center justify-between pb-8 border-b border-gray-300">
-                                <h2 className="font-manrope font-bold text-3xl leading-10 text-black">
+                                <h2 className="font-manrope font-bold text-3xl leading-10 text-[--luxury-cream]">
                                     My Wishlists
                                 </h2>
                                 <h2 className="font-manrope font-bold text-xl leading-8 text-gray-600">

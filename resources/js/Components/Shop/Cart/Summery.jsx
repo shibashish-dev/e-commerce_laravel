@@ -90,17 +90,17 @@ const Summery = ({ cartTotal, totalUniqueItems, user }) => {
     return (
         <>
             <div className="col-span-12 xl:col-span-4 bg-gray-50 w-full max-w-3xl xl:max-w-lg mx-auto lg:pl-8 px-6 py-16">
-                <h2 className="font-manrope font-bold text-3xl leading-10 text-black pb-6 border-b border-gray-300">
+                <h2 className="font-manrope font-bold text-3xl leading-10 text-[--luxury-cream] pb-6 border-b border-gray-300">
                     Order Summary
                 </h2>
 
                 <div className="mt-6">
                     {/* Order Info */}
                     <div className="flex items-center justify-between pb-4">
-                        <p className="text-lg text-black">
+                        <p className="text-lg text-[--luxury-cream]">
                             {totalUniqueItems} Items
                         </p>
-                        <p className="font-medium text-lg text-black">
+                        <p className="font-medium text-lg text-[--luxury-cream]">
                             ₹{cartTotal.toFixed(2)}
                         </p>
                     </div>
@@ -164,7 +164,7 @@ const Summery = ({ cartTotal, totalUniqueItems, user }) => {
                     )}
                     {/* Order Total */}
                     <div className="flex items-center justify-between py-6">
-                        <p className="font-medium text-xl text-black">Total</p>
+                        <p className="font-medium text-xl text-[--luxury-cream]">Total</p>
                         <p className="font-semibold text-xl text-indigo-600">
                             ₹{total.toFixed(2)}
                         </p>

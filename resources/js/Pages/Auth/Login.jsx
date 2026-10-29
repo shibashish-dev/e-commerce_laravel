@@ -1,3 +1,4 @@
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -33,6 +34,7 @@ export default function Login({ status, canResetPassword }) {
             {/* login */}
             <div className="contain py-16">
                 <div className="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
+                    <ApplicationLogo className="mx-auto mb-5" />
                     <h2 className="text-2xl uppercase font-medium mb-1">Login</h2>
                     <p className="text-gray-600 mb-6 text-sm">
                         welcome back customer
@@ -63,7 +65,7 @@ export default function Login({ status, canResetPassword }) {
                                 <input type="checkbox" name="remember" id="remember" onChange={(e) => setData('remember', e.target.checked)} value={data.remember} className="text-primary focus:ring-0 rounded-sm cursor-pointer" />
                                 <label htmlFor="remember" className="text-gray-600 ml-3 cursor-pointer">Remember me</label>
                             </div>
-                            <a href={route('password.request')} className="text-primary">Forgot password</a>
+                            <Link href={route('password.request')} className="text-primary">Forgot password</Link>
                         </div>
                         <div className="mt-4">
                             <button type="submit" disabled={processing} className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium">Login</button>

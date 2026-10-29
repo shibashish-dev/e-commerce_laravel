@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 
 import InputError from '@/Components/InputError';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,6 +27,7 @@ console.log(errors)
 
             <div className="contain py-16">
                 <div className="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
+                    <ApplicationLogo className="mx-auto mb-5 w-50" />
                     <h2 className="text-2xl uppercase font-medium mb-1">Create an account</h2>
                     <p className="text-gray-600 mb-6 text-sm">
                         Register for new cosutumer

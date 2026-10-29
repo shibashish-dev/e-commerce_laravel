@@ -23,10 +23,10 @@ const Product = ({ product, layout }) => {
 
     return (
         <>
-            <div className={`bg-white shadow rounded overflow-hidden group ${layout === 'list' ? 'flex items-center p-4 gap-4 justify-between' : ''}`}>
+            <div className={`glass-surface group overflow-hidden rounded-2xl transition duration-500 hover:-translate-y-1 hover:border-amber-100/30 hover:shadow-xl ${layout === 'list' ? 'flex items-center gap-5 p-5 sm:p-6' : ''}`}>
                 <Toast message={"Item added to cart"} open={alert} severity='success' display={alert ? 'block' : 'none'} />
                 {/* Product Image */}
-                <div className={`relative bg-gray-100 ${layout === 'list' ? 'w-40 h-40' : 'w-full h-64'} flex items-center justify-center`}>
+                <div className={`relative bg-slate-900/80 ${layout === 'list' ? 'w-40 h-40' : 'w-full h-64'} flex items-center justify-center`}>
                     <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
 
                     {/* Hover Effects */}
@@ -51,9 +51,9 @@ const Product = ({ product, layout }) => {
                 </div>
 
                 {/* Product Details */}
-                <div className={`p-4 flex flex-col gap-3 ${layout === 'list' ? 'flex-1 min-h-full justify-center ' : ''}`}>
+                <div className={`flex flex-col gap-3 p-5 sm:p-6 ${layout === 'list' ? 'min-h-full flex-1 justify-center' : ''}`}>
                     <Link href={route('product.show', product.slug)}>
-                        <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <h4 className="mb-2 text-xl font-medium uppercase text-slate-100 transition hover:text-primary">
                             {product.title}
                         </h4>
                     </Link>

@@ -26,7 +26,7 @@ const Cart = ({ auth }) => {
                         <div className="grid grid-cols-12">
                             <div className="col-span-12 pt-14 pb-8 lg:py-24 w-full">
                                 <div className="flex items-center justify-between pb-8 border-b border-gray-300">
-                                    <h2 className="font-manrope font-bold text-3xl leading-10 text-black">
+                                    <h2 className="font-manrope font-bold text-3xl leading-10 text-[--luxury-cream]">
                                         Shopping Cart
                                     </h2>
                                     <h2 className="font-manrope font-bold text-xl leading-8 text-gray-600">
@@ -50,7 +50,7 @@ const Cart = ({ auth }) => {
                 <div className="grid grid-cols-12">
                     <div className="col-span-12 xl:col-span-8 lg:pr-8 pt-14 pb-8 lg:py-24 w-full max-xl:max-w-3xl max-xl:mx-auto">
                         <div className="flex items-center justify-between pb-8 border-b border-gray-300">
-                            <h2 className="font-manrope font-bold text-3xl leading-10 text-black">
+                            <h2 className="font-manrope font-bold text-3xl leading-10 text-[--luxury-cream]">
                                 Shopping Cart
                             </h2>
                             <h2 className="font-manrope font-bold text-xl leading-8 text-gray-600">
